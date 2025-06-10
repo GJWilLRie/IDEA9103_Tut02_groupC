@@ -339,7 +339,8 @@ function setup() {
                 color('#030F7B')
             ],
             hasCurve: true,
-            angle: PI / 4
+            curveFlipped: true,
+            angle: PI / 2
         },{ //number 2
             x: 220,
             y: 35,
@@ -351,7 +352,8 @@ function setup() {
                 color('#E81207')
             ],
             hasCurve: false,
-            angle: PI / 3
+            angle: PI / 3,
+            hasDiagonal: true
         },{ //number 3
             x: 370,
             y: 0,
@@ -363,7 +365,8 @@ function setup() {
                 color('#F3352F')
             ],
             hasCurve: true,
-            angle: PI / 3
+            curveFlipped: true,
+            angle: 2* PI / 3
         },{ //number 7
             x: 480,
             y: 100,
@@ -471,7 +474,8 @@ function setup() {
                 color('#F7190C')
             ],
             hasCurve: true,
-            angle: PI / 6
+            curveFlipped: true,
+            angle: PI / 1.1
         },{ //number 13
             x: 220,
             y: 440,
@@ -483,7 +487,9 @@ function setup() {
                 color('#F66CD1')
             ],
             hasCurve: false,
-            angle: PI / 6
+            angle: PI / 6,
+            hasDiagonal: true
+
         },{ //number 14
             x: 375,
             y: 410,
@@ -562,7 +568,7 @@ function draw() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(baseWidth, baseHeight);
     scaling = min(width / baseWidth, height / baseHeight);
 }
 
@@ -582,6 +588,8 @@ class RingPattern {
 
         this.hasCurve = config.hasCurve ?? false;
         this.angle = config.angle ?? 0;
+        this.curveFlipped = config.curveFlipped ?? false;
+        this.hasDiagonal = config.hasDiagonal ?? false;
     }
 
     display() {
@@ -603,6 +611,7 @@ class RingPattern {
         noStroke();
         fill(230);
         ellipse(this.x, this.y, this.r0 * 2);  // control size using r0
+        this.drawDiagonalLine();
 
     }
 
@@ -721,6 +730,9 @@ class RingPattern {
 
         push();
         translate(this.x, this.y);
+        if (this.curveFlipped) {
+            scale(-1, 1);
+        }
         rotate(this.angle);
         stroke('#F35074');
         strokeWeight(4);
@@ -734,4 +746,19 @@ class RingPattern {
         );
         pop();
     }
+
+
+    drawDiagonalLine() {
+        if (!this.hasDiagonal) return;
+
+        push();
+        translate(this.x, this.y);
+        rotate(PI / 1.2);
+        stroke('#FF0000');
+        strokeWeight(2);
+        line(-this.r3, 0, this.r3, 0);
+        pop();
+    }
+
+
 }
