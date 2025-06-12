@@ -1,10 +1,10 @@
 let rings = [];
 let ringConfigs = [];
 let fillColors = ['#FABC08','#4CAECD','#06978A','#D70E08'];
+let baseSize = 520;
+let canvas;
 
-let baseWidth = 520; // set base width of canvas to be 520
-let baseHeight = 520; // set base height of canvas to be 520
-let scaling = 1; // set factor to scale artwork when window is resized
+
 
 // set outer ellipses variables
 let ellipses = [
@@ -321,12 +321,12 @@ function drawCircles(circleList) {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    canvas = createCanvas(baseSize, baseSize);
+    canvas.parent("canvas-container");
     noLoop();
-    angleMode(RADIANS);
+    fillEllipse(ellipses);
+    angleMode(RADIANS)
 
-    // Calculate factor to scale artwork
-    scaling = min(width / baseWidth, height / baseHeight)
 
     ringConfigs = [
         { //number 1
@@ -537,15 +537,23 @@ function setup() {
         rings.push(new RingPattern(config));
     }
 
+    windowResized()
+
 }
 
+function windowResized() {
+    let scaleFactor = min(windowWidth, windowHeight) / baseSize;
+    canvas.style('transform', `scale(${scaleFactor})`);
+    canvas.style('transform-origin', 'top left');
+    canvas.position((windowWidth - baseSize * scaleFactor) / 2, (windowHeight - baseSize * scaleFactor) / 2);
+}
 
 function draw() {
     background(1, 89, 125);
 
     // Scale and center the artpiece
-    translate((width - baseWidth * scaling) / 2, (height - baseHeight * scaling) / 2);
-    scale(scaling);
+    /*translate((width - baseWidth * scaling) / 2, (height - baseHeight * scaling) / 2);
+    scale(scaling);*/
 
     for (let r of rings) {
         r.display();
@@ -565,11 +573,6 @@ function draw() {
     }
     drawCircles(circles);
 
-}
-
-function windowResized() {
-    resizeCanvas(baseWidth, baseHeight);
-    scaling = min(width / baseWidth, height / baseHeight);
 }
 
 class RingPattern {

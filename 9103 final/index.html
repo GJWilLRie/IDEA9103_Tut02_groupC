@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8" />
     <title>p5.js Sketch</title>
-
-    <script src="libraries/p5.js"></script>
-    <script src="sketch.js"></script>
-
     <style>
         html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
         canvas {
             display: block;
+            max-width: 100%;
+            max-height: 100%;
         }
     </style>
 </head>
+
 <body>
+<div id="canvas-container"></div>
+
+<script src="libraries/p5.js"></script>
+<script src="sketch.js"></script>
 </body>
 </html>
